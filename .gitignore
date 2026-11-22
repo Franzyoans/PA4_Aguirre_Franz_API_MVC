@@ -1,0 +1,12 @@
+# Variables de entorno y datos sensibles
+.env
+# Logs
+storage/logs/*.log
+# Dependencias (este proyecto no usa composer, pero por si se agregan)
+/vendor
+/node_modules
+# Archivos del sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

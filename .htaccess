@@ -1,0 +1,4 @@
+# Permite abrir la API desde http://localhost/yoapoint_api/api/... (sin escribir /public)
+RewriteEngine On
+RewriteRule ^$ public/ [L]
+RewriteRule ^((?!public/).*)$ public/$1 [L]
