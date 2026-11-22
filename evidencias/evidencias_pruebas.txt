@@ -1,0 +1,1533 @@
+EVIDENCIAS DE PRUEBAS - API YoaPoint (PA4)
+Ejecutadas contra la API local con la base yoapoint recién importada.
+Total: 80 pruebas | Correctas: 80
+==============================================================================
+
+[01] CATEGORIAS - Listar categorías
+     GET /api/categorias
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de categorías obtenido correctamente",
+         "data": [
+           {
+             "id_categoria": 5,
+             "nombre": "Componentes",
+             "descripcion": "Procesadores, memoria RAM, SSD y tarjetas de video",
+             "estado": 1
+           },
+           {
+             "id_categoria": 6,
+             "nombre": "Impresoras y redes",
+             "descripcion": "Impresoras, routers y switches",
+             "estado": 1
+           },
+           {
+             "id_categoria": 1,
+             "nombre": "Laptops",
+             "descripcion": "Laptops para estudio, oficina y gaming",
+             "estado": 1
+           },
+           {
+             "id_categoria": 3,
+             "nombre": "Monitores",
+             "descripcion": "Monitores Full HD, 2K y 4K",
+             "estado": 1
+           },
+           {
+             "id_categoria": 2,
+             "nombre": "PCs de escritorio",
+             "descripcion": "Equipos armados y all-in-one",
+             "estado": 1
+           },
+           {
+             "id_categoria": 4,
+             "nombre": "Periféricos",
+             "descripcion": "Teclados, mouse y audio",
+             "estado": 1
+           }
+         ... (respuesta recortada)
+
+[02] CATEGORIAS - Crear categoría
+     POST /api/categorias
+     Cuerpo: {"nombre": "Redes y WiFi", "descripcion": "Routers y access points"}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_categoria": 7,
+           "nombre": "Redes y WiFi",
+           "descripcion": "Routers y access points",
+           "estado": 1
+         }
+       }
+
+[03] CATEGORIAS - Consultar categoría por id
+     GET /api/categorias/7
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de categoría realizada correctamente",
+         "data": {
+           "id_categoria": 7,
+           "nombre": "Redes y WiFi",
+           "descripcion": "Routers y access points",
+           "estado": 1
+         }
+       }
+
+[04] CATEGORIAS - Actualizar categoría (PUT)
+     PUT /api/categorias/7
+     Cuerpo: {"nombre": "Redes y WiFi", "descripcion": "Routers, switches y access points", "estado": 1}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_categoria": 7,
+           "nombre": "Redes y WiFi",
+           "descripcion": "Routers, switches y access points",
+           "estado": 1
+         }
+       }
+
+[05] CATEGORIAS - Actualizar parcialmente (PATCH)
+     PATCH /api/categorias/7
+     Cuerpo: {"descripcion": "Equipos de conectividad"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_categoria": 7,
+           "nombre": "Redes y WiFi",
+           "descripcion": "Equipos de conectividad",
+           "estado": 1
+         }
+       }
+
+[06] CATEGORIAS - Error: falta el nombre (validación)
+     POST /api/categorias
+     Cuerpo: {"descripcion": "sin nombre"}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "nombre": "El campo nombre es obligatorio."
+         }
+       }
+
+[07] CATEGORIAS - Error: nombre duplicado
+     POST /api/categorias
+     Cuerpo: {"nombre": "Laptops"}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ya existe un registro con ese valor único (código, RUC, documento o correo)."
+       }
+
+[08] CATEGORIAS - Error: categoría inexistente
+     GET /api/categorias/999
+     Esperado: 404 | Obtenido: 404 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se encontró la categoría con id 999."
+       }
+
+[09] CATEGORIAS - Eliminar categoría
+     DELETE /api/categorias/7
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[10] CATEGORIAS - Error: eliminar categoría con productos (clave foránea)
+     DELETE /api/categorias/1
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se puede eliminar: el registro tiene datos relacionados en otras tablas."
+       }
+
+[11] PROVEEDORES - Listar proveedores
+     GET /api/proveedores
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de proveedores obtenido correctamente",
+         "data": [
+           {
+             "id_proveedor": 1,
+             "razon_social": "Distribuidora Tecno Perú S.A.C.",
+             "ruc": "20512345678",
+             "contacto": "Carlos Rojas",
+             "telefono": "987111222",
+             "correo": "ventas@tecnoperu.pe",
+             "estado": 1
+           },
+           {
+             "id_proveedor": 3,
+             "razon_social": "Global Hardware E.I.R.L.",
+             "ruc": "20534567890",
+             "contacto": "Jorge Paredes",
+             "telefono": "987555666",
+             "correo": "jparedes@globalhw.pe",
+             "estado": 1
+           },
+           {
+             "id_proveedor": 2,
+             "razon_social": "Importaciones Digital Lima S.A.C.",
+             "ruc": "20523456789",
+             "contacto": "María Salazar",
+             "telefono": "987333444",
+             "correo": "contacto@digitallima.pe",
+             "estado": 1
+           },
+           {
+             "id_proveedor": 4,
+             "razon_social": "Redes y Conectividad S.A.",
+             "ruc": "20545678901",
+             "contacto": "Ana Villanueva",
+             "telefono": "987777888",
+             "correo": "ana@redesyconect.pe",
+             "estado": 1
+           }
+         ... (respuesta recortada)
+
+[12] PROVEEDORES - Crear proveedor
+     POST /api/proveedores
+     Cuerpo: {"razon_social": "Mayorista Cómputo S.A.C.", "ruc": "20567890123", "contacto": "Rosa León", "telefono": "987000111", "correo": "ventas@mayorista.pe"}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_proveedor": 5,
+           "razon_social": "Mayorista Cómputo S.A.C.",
+           "ruc": "20567890123",
+           "contacto": "Rosa León",
+           "telefono": "987000111",
+           "correo": "ventas@mayorista.pe",
+           "estado": 1
+         }
+       }
+
+[13] PROVEEDORES - Consultar proveedor por id
+     GET /api/proveedores/5
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de proveedor realizada correctamente",
+         "data": {
+           "id_proveedor": 5,
+           "razon_social": "Mayorista Cómputo S.A.C.",
+           "ruc": "20567890123",
+           "contacto": "Rosa León",
+           "telefono": "987000111",
+           "correo": "ventas@mayorista.pe",
+           "estado": 1
+         }
+       }
+
+[14] PROVEEDORES - Actualizar proveedor (PUT)
+     PUT /api/proveedores/5
+     Cuerpo: {"razon_social": "Mayorista Cómputo S.A.C.", "ruc": "20567890123", "contacto": "Rosa León Vega", "telefono": "987000222", "correo": "ventas@mayorista.pe"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_proveedor": 5,
+           "razon_social": "Mayorista Cómputo S.A.C.",
+           "ruc": "20567890123",
+           "contacto": "Rosa León Vega",
+           "telefono": "987000222",
+           "correo": "ventas@mayorista.pe",
+           "estado": 1
+         }
+       }
+
+[15] PROVEEDORES - Actualizar parcialmente (PATCH)
+     PATCH /api/proveedores/5
+     Cuerpo: {"telefono": "987000333"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_proveedor": 5,
+           "razon_social": "Mayorista Cómputo S.A.C.",
+           "ruc": "20567890123",
+           "contacto": "Rosa León Vega",
+           "telefono": "987000333",
+           "correo": "ventas@mayorista.pe",
+           "estado": 1
+         }
+       }
+
+[16] PROVEEDORES - Error: RUC con menos de 11 dígitos
+     POST /api/proveedores
+     Cuerpo: {"razon_social": "Prueba", "ruc": "123"}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "ruc": "El campo ruc debe tener exactamente 11 dígitos."
+         }
+       }
+
+[17] PROVEEDORES - Error: RUC duplicado
+     POST /api/proveedores
+     Cuerpo: {"razon_social": "Otro", "ruc": "20512345678"}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ya existe un registro con ese valor único (código, RUC, documento o correo)."
+       }
+
+[18] PROVEEDORES - Eliminar proveedor
+     DELETE /api/proveedores/5
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[19] PROVEEDORES - Error: proveedor inexistente
+     DELETE /api/proveedores/5
+     Esperado: 404 | Obtenido: 404 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se encontró el proveedor con id 5."
+       }
+
+[20] PRODUCTOS - Listar productos
+     GET /api/productos
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de productos obtenido correctamente",
+         "data": [
+           {
+             "id_producto": 1,
+             "codigo": "LAP-001",
+             "nombre": "Laptop 15.6\" Core i5 16 GB 512 GB SSD",
+             "descripcion": "Laptop para estudio y oficina",
+             "precio_venta": "2799.00",
+             "stock": 14,
+             "id_categoria": 1,
+             "categoria": "Laptops",
+             "id_proveedor": 1,
+             "proveedor": "Distribuidora Tecno Perú S.A.C.",
+             "estado": 1,
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_producto": 2,
+             "codigo": "LAP-002",
+             "nombre": "Laptop 14\" Ryzen 5 8 GB 256 GB SSD",
+             "descripcion": "Laptop ligera para estudiantes",
+             "precio_venta": "2199.00",
+             "stock": 10,
+             "id_categoria": 1,
+             "categoria": "Laptops",
+             "id_proveedor": 1,
+             "proveedor": "Distribuidora Tecno Perú S.A.C.",
+             "estado": 1,
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_producto": 3,
+             "codigo": "PCE-001",
+             "nombre": "PC de escritorio Ryzen 5 16 GB 1 TB SSD",
+             "descripcion": "Equipo armado para oficina",
+             "precio_venta": "2499.00",
+             "stock": 7,
+             "id_categoria": 2,
+         ... (respuesta recortada)
+
+[21] PRODUCTOS - Filtrar por categoría y buscar por texto
+     GET /api/productos?id_categoria=3&q=monitor
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de productos obtenido correctamente",
+         "data": [
+           {
+             "id_producto": 4,
+             "codigo": "MON-001",
+             "nombre": "Monitor 24\" Full HD IPS 75 Hz",
+             "descripcion": "Monitor para oficina y hogar",
+             "precio_venta": "459.00",
+             "stock": 22,
+             "id_categoria": 3,
+             "categoria": "Monitores",
+             "id_proveedor": 2,
+             "proveedor": "Importaciones Digital Lima S.A.C.",
+             "estado": 1,
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_producto": 5,
+             "codigo": "MON-002",
+             "nombre": "Monitor 27\" 2K 144 Hz",
+             "descripcion": "Monitor para gaming y diseño",
+             "precio_venta": "999.00",
+             "stock": 9,
+             "id_categoria": 3,
+             "categoria": "Monitores",
+             "id_proveedor": 2,
+             "proveedor": "Importaciones Digital Lima S.A.C.",
+             "estado": 1,
+             "fecha_registro": "2026-11-21 19:44:37"
+           }
+         ]
+       }
+
+[22] PRODUCTOS - Crear producto
+     POST /api/productos
+     Cuerpo: {"codigo": "TST-001", "nombre": "Mouse gamer RGB", "descripcion": "Mouse 6 botones", "precio_venta": 79.9, "stock": 20, "id_categoria": 4, "id_proveedor": 3}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_producto": 11,
+           "codigo": "TST-001",
+           "nombre": "Mouse gamer RGB",
+           "descripcion": "Mouse 6 botones",
+           "precio_venta": "79.90",
+           "stock": 20,
+           "id_categoria": 4,
+           "categoria": "Periféricos",
+           "id_proveedor": 3,
+           "proveedor": "Global Hardware E.I.R.L.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[23] PRODUCTOS - Consultar producto por id
+     GET /api/productos/11
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de producto realizada correctamente",
+         "data": {
+           "id_producto": 11,
+           "codigo": "TST-001",
+           "nombre": "Mouse gamer RGB",
+           "descripcion": "Mouse 6 botones",
+           "precio_venta": "79.90",
+           "stock": 20,
+           "id_categoria": 4,
+           "categoria": "Periféricos",
+           "id_proveedor": 3,
+           "proveedor": "Global Hardware E.I.R.L.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[24] PRODUCTOS - Actualizar producto (PUT)
+     PUT /api/productos/11
+     Cuerpo: {"codigo": "TST-001", "nombre": "Mouse gamer RGB 7200 DPI", "descripcion": "Mouse 6 botones", "precio_venta": 84.9, "stock": 25, "id_categoria": 4, "id_proveedor": 3}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_producto": 11,
+           "codigo": "TST-001",
+           "nombre": "Mouse gamer RGB 7200 DPI",
+           "descripcion": "Mouse 6 botones",
+           "precio_venta": "84.90",
+           "stock": 25,
+           "id_categoria": 4,
+           "categoria": "Periféricos",
+           "id_proveedor": 3,
+           "proveedor": "Global Hardware E.I.R.L.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[25] PRODUCTOS - Actualizar parcialmente (PATCH)
+     PATCH /api/productos/11
+     Cuerpo: {"stock": 30}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_producto": 11,
+           "codigo": "TST-001",
+           "nombre": "Mouse gamer RGB 7200 DPI",
+           "descripcion": "Mouse 6 botones",
+           "precio_venta": "84.90",
+           "stock": 30,
+           "id_categoria": 4,
+           "categoria": "Periféricos",
+           "id_proveedor": 3,
+           "proveedor": "Global Hardware E.I.R.L.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[26] PRODUCTOS - Error: precio negativo y categoría inexistente
+     POST /api/productos
+     Cuerpo: {"codigo": "TST-002", "nombre": "X", "precio_venta": -5, "id_categoria": 999, "id_proveedor": 1}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "precio_venta": "El campo precio_venta debe ser como mínimo 0.01.",
+           "id_categoria": "El valor indicado en id_categoria no existe en categorias."
+         }
+       }
+
+[27] PRODUCTOS - Error: código duplicado
+     POST /api/productos
+     Cuerpo: {"codigo": "LAP-001", "nombre": "Repetido", "precio_venta": 10, "id_categoria": 1, "id_proveedor": 1}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ya existe un registro con ese valor único (código, RUC, documento o correo)."
+       }
+
+[28] PRODUCTOS - Eliminar producto
+     DELETE /api/productos/11
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[29] PRODUCTOS - Error: eliminar producto vendido (clave foránea)
+     DELETE /api/productos/1
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se puede eliminar: el registro tiene datos relacionados en otras tablas."
+       }
+
+[30] CLIENTES - Listar clientes
+     GET /api/clientes
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de clientes obtenido correctamente",
+         "data": [
+           {
+             "id_cliente": 8,
+             "tipo_cliente": "PERSONA",
+             "nombre": "Camila Torres Vera",
+             "documento": "75678901",
+             "correo": "camila.torres@mail.com",
+             "telefono": "999111005",
+             "direccion": "Av. Universitaria 650, Los Olivos",
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_cliente": 7,
+             "tipo_cliente": "EMPRESA",
+             "nombre": "Clínica Santa Rosa S.A.",
+             "documento": "20603456789",
+             "correo": "logistica@clinicasr.pe",
+             "telefono": "014445553",
+             "direccion": "Av. Salaverry 900, Jesús María",
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_cliente": 5,
+             "tipo_cliente": "EMPRESA",
+             "nombre": "Colegio San Martín S.A.C.",
+             "documento": "20601234567",
+             "correo": "compras@sanmartin.edu.pe",
+             "telefono": "014445551",
+             "direccion": "Av. La Marina 2000, San Miguel",
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_cliente": 2,
+             "tipo_cliente": "PERSONA",
+             "nombre": "Diego Ramírez Soto",
+             "documento": "72345678",
+             "correo": "diego.ramirez@mail.com",
+         ... (respuesta recortada)
+
+[31] CLIENTES - Filtrar clientes por tipo
+     GET /api/clientes?tipo_cliente=EMPRESA
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de clientes obtenido correctamente",
+         "data": [
+           {
+             "id_cliente": 7,
+             "tipo_cliente": "EMPRESA",
+             "nombre": "Clínica Santa Rosa S.A.",
+             "documento": "20603456789",
+             "correo": "logistica@clinicasr.pe",
+             "telefono": "014445553",
+             "direccion": "Av. Salaverry 900, Jesús María",
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_cliente": 5,
+             "tipo_cliente": "EMPRESA",
+             "nombre": "Colegio San Martín S.A.C.",
+             "documento": "20601234567",
+             "correo": "compras@sanmartin.edu.pe",
+             "telefono": "014445551",
+             "direccion": "Av. La Marina 2000, San Miguel",
+             "fecha_registro": "2026-11-21 19:44:37"
+           },
+           {
+             "id_cliente": 6,
+             "tipo_cliente": "EMPRESA",
+             "nombre": "Estudio Contable Vega E.I.R.L.",
+             "documento": "20602345678",
+             "correo": "admin@estudiovega.pe",
+             "telefono": "014445552",
+             "direccion": "Av. Javier Prado 1500, San Isidro",
+             "fecha_registro": "2026-11-21 19:44:37"
+           }
+         ]
+       }
+
+[32] CLIENTES - Crear cliente (persona)
+     POST /api/clientes
+     Cuerpo: {"tipo_cliente": "PERSONA", "nombre": "Mateo Rojas Peña", "documento": "76543210", "correo": "mateo.rojas@mail.com", "telefono": "999222333", "direccion": "Av. Perú 123, Lima"}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_cliente": 9,
+           "tipo_cliente": "PERSONA",
+           "nombre": "Mateo Rojas Peña",
+           "documento": "76543210",
+           "correo": "mateo.rojas@mail.com",
+           "telefono": "999222333",
+           "direccion": "Av. Perú 123, Lima",
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[33] CLIENTES - Consultar cliente por id
+     GET /api/clientes/9
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de cliente realizada correctamente",
+         "data": {
+           "id_cliente": 9,
+           "tipo_cliente": "PERSONA",
+           "nombre": "Mateo Rojas Peña",
+           "documento": "76543210",
+           "correo": "mateo.rojas@mail.com",
+           "telefono": "999222333",
+           "direccion": "Av. Perú 123, Lima",
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[34] CLIENTES - Actualizar cliente (PUT)
+     PUT /api/clientes/9
+     Cuerpo: {"tipo_cliente": "PERSONA", "nombre": "Mateo Rojas Peña", "documento": "76543210", "correo": "mateo.rojas@correo.com", "telefono": "999222333", "direccion": "Av. Perú 456, Lima"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_cliente": 9,
+           "tipo_cliente": "PERSONA",
+           "nombre": "Mateo Rojas Peña",
+           "documento": "76543210",
+           "correo": "mateo.rojas@correo.com",
+           "telefono": "999222333",
+           "direccion": "Av. Perú 456, Lima",
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[35] CLIENTES - Actualizar parcialmente (PATCH)
+     PATCH /api/clientes/9
+     Cuerpo: {"telefono": "999000111"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_cliente": 9,
+           "tipo_cliente": "PERSONA",
+           "nombre": "Mateo Rojas Peña",
+           "documento": "76543210",
+           "correo": "mateo.rojas@correo.com",
+           "telefono": "999000111",
+           "direccion": "Av. Perú 456, Lima",
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[36] CLIENTES - Error: PERSONA con RUC de 11 dígitos
+     POST /api/clientes
+     Cuerpo: {"tipo_cliente": "PERSONA", "nombre": "Error", "documento": "20123456789"}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "documento": "Para una PERSONA el documento debe ser un DNI de 8 dígitos."
+         }
+       }
+
+[37] CLIENTES - Error: DNI duplicado
+     POST /api/clientes
+     Cuerpo: {"tipo_cliente": "PERSONA", "nombre": "Repetido", "documento": "71234567"}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ya existe un registro con ese valor único (código, RUC, documento o correo)."
+       }
+
+[38] CLIENTES - Eliminar cliente
+     DELETE /api/clientes/9
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[39] CLIENTES - Error: eliminar cliente con pedidos (clave foránea)
+     DELETE /api/clientes/1
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se puede eliminar: el registro tiene datos relacionados en otras tablas."
+       }
+
+[40] USUARIOS - Listar usuarios (sin exponer la clave)
+     GET /api/usuarios
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de usuarios obtenido correctamente",
+         "data": [
+           {
+             "id_usuario": 1,
+             "nombre": "Franz Aguirre",
+             "correo": "admin@yoapoint.pe",
+             "rol": "ADMIN",
+             "estado": 1
+           },
+           {
+             "id_usuario": 2,
+             "nombre": "Sofía Medina",
+             "correo": "smedina@yoapoint.pe",
+             "rol": "VENDEDOR",
+             "estado": 1
+           },
+           {
+             "id_usuario": 3,
+             "nombre": "Marco Quispe",
+             "correo": "mquispe@yoapoint.pe",
+             "rol": "VENDEDOR",
+             "estado": 1
+           },
+           {
+             "id_usuario": 4,
+             "nombre": "Elena Paredes",
+             "correo": "eparedes@yoapoint.pe",
+             "rol": "ALMACEN",
+             "estado": 1
+           }
+         ]
+       }
+
+[41] USUARIOS - Crear usuario
+     POST /api/usuarios
+     Cuerpo: {"nombre": "Paola Núñez", "correo": "pnunez@yoapoint.pe", "clave": "Segura2026", "rol": "VENDEDOR"}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_usuario": 5,
+           "nombre": "Paola Núñez",
+           "correo": "pnunez@yoapoint.pe",
+           "rol": "VENDEDOR",
+           "estado": 1
+         }
+       }
+
+[42] USUARIOS - Consultar usuario por id
+     GET /api/usuarios/5
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de usuario realizada correctamente",
+         "data": {
+           "id_usuario": 5,
+           "nombre": "Paola Núñez",
+           "correo": "pnunez@yoapoint.pe",
+           "rol": "VENDEDOR",
+           "estado": 1
+         }
+       }
+
+[43] USUARIOS - Actualizar usuario (PUT)
+     PUT /api/usuarios/5
+     Cuerpo: {"nombre": "Paola Núñez Ruiz", "correo": "pnunez@yoapoint.pe", "rol": "ALMACEN"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_usuario": 5,
+           "nombre": "Paola Núñez Ruiz",
+           "correo": "pnunez@yoapoint.pe",
+           "rol": "ALMACEN",
+           "estado": 1
+         }
+       }
+
+[44] USUARIOS - Actualizar parcialmente (PATCH)
+     PATCH /api/usuarios/5
+     Cuerpo: {"estado": 0}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_usuario": 5,
+           "nombre": "Paola Núñez Ruiz",
+           "correo": "pnunez@yoapoint.pe",
+           "rol": "ALMACEN",
+           "estado": 0
+         }
+       }
+
+[45] USUARIOS - Error: correo inválido, rol inválido y clave corta
+     POST /api/usuarios
+     Cuerpo: {"nombre": "X", "correo": "no-es-correo", "clave": "123", "rol": "SUPERADMIN"}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "correo": "El campo correo debe ser un correo electrónico válido.",
+           "clave": "El campo clave debe tener al menos 6 caracteres.",
+           "rol": "El campo rol debe ser uno de: ADMIN, VENDEDOR, ALMACEN."
+         }
+       }
+
+[46] USUARIOS - Error: correo duplicado
+     POST /api/usuarios
+     Cuerpo: {"nombre": "Otro", "correo": "admin@yoapoint.pe", "clave": "Clave1234"}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ya existe un registro con ese valor único (código, RUC, documento o correo)."
+       }
+
+[47] USUARIOS - Eliminar usuario
+     DELETE /api/usuarios/5
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[48] USUARIOS - Error: eliminar usuario con pedidos (clave foránea)
+     DELETE /api/usuarios/2
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se puede eliminar: el registro tiene datos relacionados en otras tablas."
+       }
+
+[49] PEDIDOS - Listar pedidos
+     GET /api/pedidos
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de pedidos obtenido correctamente",
+         "data": [
+           {
+             "id_pedido": 6,
+             "id_cliente": 3,
+             "cliente": "Valeria Campos Díaz",
+             "id_usuario": 3,
+             "vendedor": "Marco Quispe",
+             "fecha": "2026-10-22 12:00:00",
+             "estado": "PENDIENTE",
+             "total": "1128.00"
+           },
+           {
+             "id_pedido": 5,
+             "id_cliente": 7,
+             "cliente": "Clínica Santa Rosa S.A.",
+             "id_usuario": 2,
+             "vendedor": "Sofía Medina",
+             "fecha": "2026-10-18 15:10:00",
+             "estado": "PAGADO",
+             "total": "1337.00"
+           },
+           {
+             "id_pedido": 4,
+             "id_cliente": 6,
+             "cliente": "Estudio Contable Vega E.I.R.L.",
+             "id_usuario": 3,
+             "vendedor": "Marco Quispe",
+             "fecha": "2026-10-14 09:20:00",
+             "estado": "PENDIENTE",
+             "total": "4398.00"
+           },
+           {
+             "id_pedido": 3,
+             "id_cliente": 2,
+             "cliente": "Diego Ramírez Soto",
+             "id_usuario": 3,
+             "vendedor": "Marco Quispe",
+         ... (respuesta recortada)
+
+[50] PEDIDOS - Filtrar pedidos por estado
+     GET /api/pedidos?estado=PENDIENTE
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de pedidos obtenido correctamente",
+         "data": [
+           {
+             "id_pedido": 6,
+             "id_cliente": 3,
+             "cliente": "Valeria Campos Díaz",
+             "id_usuario": 3,
+             "vendedor": "Marco Quispe",
+             "fecha": "2026-10-22 12:00:00",
+             "estado": "PENDIENTE",
+             "total": "1128.00"
+           },
+           {
+             "id_pedido": 4,
+             "id_cliente": 6,
+             "cliente": "Estudio Contable Vega E.I.R.L.",
+             "id_usuario": 3,
+             "vendedor": "Marco Quispe",
+             "fecha": "2026-10-14 09:20:00",
+             "estado": "PENDIENTE",
+             "total": "4398.00"
+           }
+         ]
+       }
+
+[51] PEDIDOS - Crear pedido
+     POST /api/pedidos
+     Cuerpo: {"id_cliente": 4, "id_usuario": 2}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro creado correctamente",
+         "data": {
+           "id_pedido": 7,
+           "id_cliente": 4,
+           "cliente": "Renzo Huamán Lazo",
+           "id_usuario": 2,
+           "vendedor": "Sofía Medina",
+           "fecha": "2026-11-21 19:44:37",
+           "estado": "PENDIENTE",
+           "total": "0.00"
+         }
+       }
+
+[52] PEDIDOS - Consultar pedido por id (incluye detalle)
+     GET /api/pedidos/1
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de pedido realizada correctamente",
+         "data": {
+           "id_pedido": 1,
+           "id_cliente": 1,
+           "cliente": "Lucía Fernández Ríos",
+           "id_usuario": 2,
+           "vendedor": "Sofía Medina",
+           "fecha": "2026-10-05 10:15:00",
+           "estado": "PAGADO",
+           "total": "2888.00",
+           "detalle": [
+             {
+               "id_detalle": 1,
+               "id_producto": 1,
+               "codigo": "LAP-001",
+               "producto": "Laptop 15.6\" Core i5 16 GB 512 GB SSD",
+               "cantidad": 1,
+               "precio_unitario": "2799.00",
+               "subtotal": "2799.00"
+             },
+             {
+               "id_detalle": 2,
+               "id_producto": 6,
+               "codigo": "PER-001",
+               "producto": "Combo teclado y mouse inalámbrico",
+               "cantidad": 1,
+               "precio_unitario": "89.00",
+               "subtotal": "89.00"
+             }
+           ]
+         }
+       }
+
+[53] PEDIDOS - Error: cliente inexistente
+     POST /api/pedidos
+     Cuerpo: {"id_cliente": 999, "id_usuario": 2}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "id_cliente": "El valor indicado en id_cliente no existe en clientes."
+         }
+       }
+
+[54] DETALLE-PEDIDO - Listar detalle de un pedido
+     GET /api/detalle-pedido?id_pedido=1
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Listado de detalles de pedido obtenido correctamente",
+         "data": [
+           {
+             "id_detalle": 1,
+             "id_pedido": 1,
+             "id_producto": 1,
+             "codigo": "LAP-001",
+             "producto": "Laptop 15.6\" Core i5 16 GB 512 GB SSD",
+             "cantidad": 1,
+             "precio_unitario": "2799.00",
+             "subtotal": "2799.00"
+           },
+           {
+             "id_detalle": 2,
+             "id_pedido": 1,
+             "id_producto": 6,
+             "codigo": "PER-001",
+             "producto": "Combo teclado y mouse inalámbrico",
+             "cantidad": 1,
+             "precio_unitario": "89.00",
+             "subtotal": "89.00"
+           }
+         ]
+       }
+
+[55] DETALLE-PEDIDO - Stock del producto antes de vender (id 4)
+     GET /api/productos/4
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de producto realizada correctamente",
+         "data": {
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "nombre": "Monitor 24\" Full HD IPS 75 Hz",
+           "descripcion": "Monitor para oficina y hogar",
+           "precio_venta": "459.00",
+           "stock": 22,
+           "id_categoria": 3,
+           "categoria": "Monitores",
+           "id_proveedor": 2,
+           "proveedor": "Importaciones Digital Lima S.A.C.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[56] DETALLE-PEDIDO - Agregar producto al pedido (procedimiento almacenado)
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 4, "cantidad": 2}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Producto agregado al pedido correctamente",
+         "data": {
+           "id_detalle": 11,
+           "id_pedido": 7,
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "producto": "Monitor 24\" Full HD IPS 75 Hz",
+           "cantidad": 2,
+           "precio_unitario": "459.00",
+           "subtotal": "918.00"
+         }
+       }
+
+[57] DETALLE-PEDIDO - Consultar detalle por id
+     GET /api/detalle-pedido/11
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de detalle de pedido realizada correctamente",
+         "data": {
+           "id_detalle": 11,
+           "id_pedido": 7,
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "producto": "Monitor 24\" Full HD IPS 75 Hz",
+           "cantidad": 2,
+           "precio_unitario": "459.00",
+           "subtotal": "918.00"
+         }
+       }
+
+[58] DETALLE-PEDIDO - Stock descontado automáticamente
+     GET /api/productos/4
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de producto realizada correctamente",
+         "data": {
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "nombre": "Monitor 24\" Full HD IPS 75 Hz",
+           "descripcion": "Monitor para oficina y hogar",
+           "precio_venta": "459.00",
+           "stock": 20,
+           "id_categoria": 3,
+           "categoria": "Monitores",
+           "id_proveedor": 2,
+           "proveedor": "Importaciones Digital Lima S.A.C.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[59] DETALLE-PEDIDO - Actualizar cantidad (PUT)
+     PUT /api/detalle-pedido/11
+     Cuerpo: {"cantidad": 3}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Cantidad actualizada correctamente",
+         "data": {
+           "id_detalle": 11,
+           "id_pedido": 7,
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "producto": "Monitor 24\" Full HD IPS 75 Hz",
+           "cantidad": 3,
+           "precio_unitario": "459.00",
+           "subtotal": "1377.00"
+         }
+       }
+
+[60] DETALLE-PEDIDO - Actualizar cantidad (PATCH)
+     PATCH /api/detalle-pedido/11
+     Cuerpo: {"cantidad": 4}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Cantidad actualizada correctamente",
+         "data": {
+           "id_detalle": 11,
+           "id_pedido": 7,
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "producto": "Monitor 24\" Full HD IPS 75 Hz",
+           "cantidad": 4,
+           "precio_unitario": "459.00",
+           "subtotal": "1836.00"
+         }
+       }
+
+[61] DETALLE-PEDIDO - Error: stock insuficiente
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 5, "cantidad": 500}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Cantidad inválida o stock insuficiente"
+       }
+
+[62] DETALLE-PEDIDO - Error: producto repetido en el pedido
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 4, "cantidad": 1}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "El producto ya está en el pedido; use PUT /api/detalle-pedido/{id} para cambiar la cantidad."
+       }
+
+[63] DETALLE-PEDIDO - Error: cantidad cero
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 6, "cantidad": 0}
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Los datos enviados no son válidos.",
+         "errors": {
+           "cantidad": "El campo cantidad debe ser como mínimo 1."
+         }
+       }
+
+[64] DETALLE-PEDIDO - Agregar segundo producto
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 6, "cantidad": 2}
+     Esperado: 201 | Obtenido: 201 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Producto agregado al pedido correctamente",
+         "data": {
+           "id_detalle": 12,
+           "id_pedido": 7,
+           "id_producto": 6,
+           "codigo": "PER-001",
+           "producto": "Combo teclado y mouse inalámbrico",
+           "cantidad": 2,
+           "precio_unitario": "89.00",
+           "subtotal": "178.00"
+         }
+       }
+
+[65] DETALLE-PEDIDO - Eliminar línea del pedido (devuelve stock)
+     DELETE /api/detalle-pedido/12
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Línea eliminada del pedido correctamente",
+         "data": null
+       }
+
+[66] PEDIDOS - Consultar pedido con su detalle y total
+     GET /api/pedidos/7
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de pedido realizada correctamente",
+         "data": {
+           "id_pedido": 7,
+           "id_cliente": 4,
+           "cliente": "Renzo Huamán Lazo",
+           "id_usuario": 2,
+           "vendedor": "Sofía Medina",
+           "fecha": "2026-11-21 19:44:37",
+           "estado": "PENDIENTE",
+           "total": "1836.00",
+           "detalle": [
+             {
+               "id_detalle": 11,
+               "id_producto": 4,
+               "codigo": "MON-001",
+               "producto": "Monitor 24\" Full HD IPS 75 Hz",
+               "cantidad": 4,
+               "precio_unitario": "459.00",
+               "subtotal": "1836.00"
+             }
+           ]
+         }
+       }
+
+[67] PEDIDOS - Actualizar pedido a PAGADO (PUT)
+     PUT /api/pedidos/7
+     Cuerpo: {"id_cliente": 4, "id_usuario": 2, "estado": "PAGADO"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_pedido": 7,
+           "id_cliente": 4,
+           "cliente": "Renzo Huamán Lazo",
+           "id_usuario": 2,
+           "vendedor": "Sofía Medina",
+           "fecha": "2026-11-21 19:44:37",
+           "estado": "PAGADO",
+           "total": "1836.00"
+         }
+       }
+
+[68] PEDIDOS - Anular pedido (PATCH) – devuelve el stock
+     PATCH /api/pedidos/7
+     Cuerpo: {"estado": "ANULADO"}
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro actualizado correctamente",
+         "data": {
+           "id_pedido": 7,
+           "id_cliente": 4,
+           "cliente": "Renzo Huamán Lazo",
+           "id_usuario": 2,
+           "vendedor": "Sofía Medina",
+           "fecha": "2026-11-21 19:44:37",
+           "estado": "ANULADO",
+           "total": "1836.00"
+         }
+       }
+
+[69] PEDIDOS - Stock restituido tras anular
+     GET /api/productos/4
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Consulta de producto realizada correctamente",
+         "data": {
+           "id_producto": 4,
+           "codigo": "MON-001",
+           "nombre": "Monitor 24\" Full HD IPS 75 Hz",
+           "descripcion": "Monitor para oficina y hogar",
+           "precio_venta": "459.00",
+           "stock": 22,
+           "id_categoria": 3,
+           "categoria": "Monitores",
+           "id_proveedor": 2,
+           "proveedor": "Importaciones Digital Lima S.A.C.",
+           "estado": 1,
+           "fecha_registro": "2026-11-21 19:44:37"
+         }
+       }
+
+[70] PEDIDOS - Error: reactivar un pedido anulado
+     PATCH /api/pedidos/7
+     Cuerpo: {"estado": "PENDIENTE"}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Un pedido ANULADO no puede cambiar de estado."
+       }
+
+[71] DETALLE-PEDIDO - Error: agregar productos a un pedido anulado
+     POST /api/detalle-pedido
+     Cuerpo: {"id_pedido": 7, "id_producto": 6, "cantidad": 1}
+     Esperado: 409 | Obtenido: 409 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se pueden agregar productos a un pedido ANULADO."
+       }
+
+[72] PEDIDOS - Eliminar pedido
+     DELETE /api/pedidos/7
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Registro eliminado correctamente",
+         "data": null
+       }
+
+[73] PEDIDOS - Error: pedido inexistente
+     GET /api/pedidos/9999
+     Esperado: 404 | Obtenido: 404 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "No se encontró el pedido con id 9999."
+       }
+
+[74] REPORTES - Ventas por categoría (procedimiento almacenado)
+     GET /api/reportes/ventas-por-categoria
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Reporte de ventas por categoría",
+         "data": [
+           {
+             "categoria": "PCs de escritorio",
+             "unidades_vendidas": "3",
+             "monto_vendido": "7497.00"
+           },
+           {
+             "categoria": "Laptops",
+             "unidades_vendidas": "3",
+             "monto_vendido": "7197.00"
+           },
+           {
+             "categoria": "Monitores",
+             "unidades_vendidas": "4",
+             "monto_vendido": "2376.00"
+           },
+           {
+             "categoria": "Componentes",
+             "unidades_vendidas": "3",
+             "monto_vendido": "2008.00"
+           },
+           {
+             "categoria": "Impresoras y redes",
+             "unidades_vendidas": "1",
+             "monto_vendido": "679.00"
+           },
+           {
+             "categoria": "Periféricos",
+             "unidades_vendidas": "2",
+             "monto_vendido": "218.00"
+           }
+         ]
+       }
+
+[75] REPORTES - Resumen de pedidos (vista) filtrado
+     GET /api/reportes/pedidos-resumen?estado=PAGADO
+     Esperado: 200 | Obtenido: 200 | OK
+     Respuesta:
+       {
+         "success": true,
+         "message": "Resumen de pedidos",
+         "data": [
+           {
+             "id_pedido": 5,
+             "fecha": "2026-10-18 15:10:00",
+             "cliente": "Clínica Santa Rosa S.A.",
+             "tipo_cliente": "EMPRESA",
+             "vendedor": "Sofía Medina",
+             "estado": "PAGADO",
+             "total": "1337.00"
+           },
+           {
+             "id_pedido": 3,
+             "fecha": "2026-10-10 16:45:00",
+             "cliente": "Diego Ramírez Soto",
+             "tipo_cliente": "PERSONA",
+             "vendedor": "Marco Quispe",
+             "estado": "PAGADO",
+             "total": "1350.00"
+           },
+           {
+             "id_pedido": 1,
+             "fecha": "2026-10-05 10:15:00",
+             "cliente": "Lucía Fernández Ríos",
+             "tipo_cliente": "PERSONA",
+             "vendedor": "Sofía Medina",
+             "estado": "PAGADO",
+             "total": "2888.00"
+           }
+         ]
+       }
+
+[76] REPORTES - Error: estado de reporte inválido
+     GET /api/reportes/pedidos-resumen?estado=XYZ
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "El estado debe ser PENDIENTE, PAGADO, ENVIADO o ANULADO."
+       }
+
+[77] GENERALES - Error: JSON mal formado
+     POST /api/categorias
+     Cuerpo: {"nombre": "Falta cerrar
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "El cuerpo de la petición no es un JSON válido."
+       }
+
+[78] GENERALES - Error: id no numérico
+     GET /api/productos/abc
+     Esperado: 400 | Obtenido: 400 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "El id debe ser un número entero positivo."
+       }
+
+[79] GENERALES - Error: ruta inexistente
+     GET /api/ventas
+     Esperado: 404 | Obtenido: 404 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Ruta no encontrada."
+       }
+
+[80] GENERALES - Error: método no permitido
+     DELETE /api/categorias
+     Esperado: 405 | Obtenido: 405 | OK
+     Respuesta:
+       {
+         "success": false,
+         "message": "Método HTTP no permitido para esta ruta."
+       }
